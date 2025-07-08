@@ -1,6 +1,7 @@
 #include <iostream>
 #include <random>
 #include <cmath>
+#include <chrono>
 #include <fstream>
 
 using namespace std;
@@ -127,7 +128,9 @@ double energia_potencial(double x[N], double y[N], double L) {
 int main() {
     double x[N], y[N], vx[N], vy[N], ax[N], ay[N];
     double ec[N], ep[N];
-   
+    // Medir tiempo de simulación
+    auto start = std::chrono::high_resolution_clock::now();
+
     inicializarparticulas(x, y, vx, vy, ax, ay, L);
 
     fuerza(x, y, ax, ay, L);
@@ -217,5 +220,10 @@ int main() {
 
     fout.close();
     std:: cout<< "Simulación completada. Posiciones guardadas en posiciones.txt\n";
+
+    // Medir tiempo de simulación
+     auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed = end - start;
+    std::cout << "Tiempo de simulación: " << elapsed.count() << " segundos" << std::endl;
     return 0;
 }
