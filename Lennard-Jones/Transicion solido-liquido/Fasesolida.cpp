@@ -119,10 +119,6 @@ int main() {
     ofstream vfile("v_sl.txt"); // módulo de la velocidad del sistema
     ofstream fout("posiciones_sl.txt");
     ofstream fout2("energias_sl.txt");
-    ofstream fluct ( "Fluctuaciones.txt");
-  // Guarda la posición inicial de la partícula 0
-    double x0_inicial = x[0];
-    double y0_inicial = y[0];
     for (int i = 0; i < N; ++i)
         fout << x[i] << ", " << y[i] << endl;
     fout << endl;
@@ -150,32 +146,7 @@ int main() {
             vy[i] = wy[i] + 0.5 * ay[i] * dt;
         }
 
-        // Reescalado de velocidades en tiempos específicos
-    if (
-    abs(k - 20.0) < 0.5*dt ||
-    abs(k - 30.0) < 0.5*dt ||
-    abs(k - 35.0) < 0.5*dt ||
-    abs(k - 45.0) < 0.5*dt
-    ) {
-    for (int i = 0; i < N; ++i) {
-        vx[i] *= 1.5;
-        vy[i] *= 1.5;
-    }
-    std::cout << "Velocidades reescaladas en t = " << k << std::endl;
-}
 
-// Calcular fluctuación de posición de la partícula 0
-double dx_fluct = x[0] - x0_inicial;
-double dy_fluct = y[0] - y0_inicial;
-
-// Aplicar condiciones de contorno mínimas a la diferencia:
-aplicarCondicionContornoDistancia(dx_fluct, L);
-aplicarCondicionContornoDistancia(dy_fluct, L);
-
-double r2_fluct = dx_fluct*dx_fluct + dy_fluct*dy_fluct;
-
-// Guardar el tiempo y la fluctuación
-fluct << k << " " << r2_fluct << endl;
 
         // Guardar velocidades de un rango de tiempo
         // Guardar velocidades al inicio y en equilibrio
@@ -212,8 +183,6 @@ fluct << k << " " << r2_fluct << endl;
         }
     }
     fout2.close();
- 
-
     vxfile.close();
     vyfile.close();
     vfile.close();
